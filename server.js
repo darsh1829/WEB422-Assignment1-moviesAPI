@@ -13,6 +13,12 @@ app.get("/", function(req, res) {
     //console.log("Hello there!");
     console.log("API Listening");
 })
-var port = process.env.PORT || 8080;
 
-app.listen(port);
+
+db.initialize(process.env.MONGODB_CONN_STRING).then(() => {
+    app.listen(HTTP_PORT, () => {
+        console.log(`server listening on: ${HTTP_PORT}`);
+    });
+}).catch((err) => {
+    console.log(err);
+});
