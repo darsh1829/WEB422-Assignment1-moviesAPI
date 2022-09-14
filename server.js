@@ -4,6 +4,8 @@ const bodyparser = require("body-parser");
 const cors = require("cors");
 const dotEnv = require('dotenv').config();
 
+const MoviesDB = require("./modules/moviesDB.js");
+const db = new MoviesDB();
 
 app.use(bodyparser.json());
 app.use(cors());
