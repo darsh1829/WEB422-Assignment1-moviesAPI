@@ -41,8 +41,59 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json({ message: 'API Listening' });
+// app.get('/', (req, res) => {
+//     res.json({ message: 'API Listening' });
+// });
+
+app.post("/api/movies", (req, res) => {
+    res.status(201).json(db.addNewMovie(req.body))
+})
+
+app.get("/api/movies", (req, res) => {
+    let page = req.query.page;
+    let perPage = req.query.perPage;
+
+    db.getAllMovies(page, perPage).then((data) => {
+            res.status(200).json({ data });
+        })
+        .catch((err) => {
+            res.status(400).json({ message: 'an error occured: ${err}' });
+        });
+})
+
+app.get("/api/movies/:id", (req, res) => {
+    db.getMovieById(req.params.id).then((data) => {
+            res.status(200).json({ data });
+        })
+        .catch((err) => {
+            res.status(401).json({ message: 'an error occured:${err}' });
+        });
+});
+
+app.put("/api/movies/:id", (req, res) => {
+    db
+        .updateMovieById(req.body, req.params.id)
+        .then((data) => {
+            res.status(200).json({ message: data });
+        })
+        .catch((err) => {
+            res.status(401).json({ message: `an error occurred: ${err}` });
+        });
+});
+
+app.delete("/api/movies/:id", (req, res) => {
+    db
+        .deleteMovieById(req.params.id)
+        .then((data) => {
+            res.status(200).json({ message: data });
+        })
+        .catch((err) => {
+            res.status(401).json({ message: `an error occurred: ${err}` });
+        });
+});
+
+app.use((req, res) => {
+    res.status(404).send("Resource not found");
 });
 
 db.initialize(process.env.MONGODB_CONN_STRING).then(() => {
