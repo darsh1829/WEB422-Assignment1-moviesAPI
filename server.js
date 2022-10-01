@@ -38,7 +38,7 @@ app.get("/api/movies", (req, res) => {
     let title = req.query.tile;
 
     db.getAllMovies(page, perPage, title).then((data) => {
-            res.status(201).json({ data });
+            res.status(201).json(data);
         })
         .catch((err) => {
             res.status(500).json({});
@@ -47,7 +47,7 @@ app.get("/api/movies", (req, res) => {
 
 app.get("/api/movies/:id", (req, res) => {
     db.getMovieById(req.params.id).then((data) => {
-            res.status(201).json({ data });
+            res.status(201).json(data);
         })
         .catch((err) => {
             res.status(500).json({
@@ -60,7 +60,7 @@ app.put("/api/movies/:id", (req, res) => {
     db
         .updateMovieById(req.body, req.params.id)
         .then((data) => {
-            res.status(204).json({ message: data });
+            res.status(204).json({message: data});
         })
         .catch((err) => {
             res.status(500).json({ message: 'Something went wrong, please try again ${err}' });
@@ -71,7 +71,7 @@ app.delete("/api/movies/:id", (req, res) => {
     db
         .deleteMovieById(req.params.id)
         .then((data) => {
-            res.status(201).json({ message: data });
+            res.status(201).json( {message: data });
         })
         .catch((err) => {
             res.status(500).json({
